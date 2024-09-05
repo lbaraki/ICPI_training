@@ -62,5 +62,5 @@ df_mock_facility <-
   df_mock %>% 
   select(province, facility_name)
 
-# Check the names of the columns in the df_msd_mech data frame
+# Check the names of the columns in the data frame
 names(df_mock_facility)

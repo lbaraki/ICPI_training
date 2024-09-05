@@ -3,6 +3,7 @@
 # Project Setup & Data Prep -----------------------------------------------
 library(tidyverse)
 library(gagglr)
+library(readxl)
 
 # Create a path to data
 mock_path <- list.files("Data", pattern = "dataset", full.names = T)
@@ -45,7 +46,7 @@ glimpse("...")
 # UNIQUENESS --------------------------------------------------------------
 
 # Check for unique observations using distinct, unique or count
-# country, snu1, indicator
+# country, province, type_of_testing_modality
 unique("...")
 
 df_mock %>% 
