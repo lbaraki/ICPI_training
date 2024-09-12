@@ -32,8 +32,8 @@ df_train <- df_train %>%
 names(df_train)
 
 df_train %>% 
-  filter(country == "") %>% 
-  group_by("", "***") %>% 
+  filter(country == "A") %>% 
+  group_by(kp_status, country) %>% 
   summarise(cumulative = n(), .groups = "drop") %>% 
   arrange(cumulative)
 

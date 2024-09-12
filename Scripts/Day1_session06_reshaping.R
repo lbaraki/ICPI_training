@@ -7,7 +7,7 @@ library(tidyverse)
 library(gagglr)
 
 # Load data
-df_path <- list.files("Data", pattern = "clean-2024", full.names = T)
+df_path <- list.files("Data", pattern = "final-2024", full.names = T)
 
 df_train <- read_csv(df_path) %>% 
   janitor::clean_names()

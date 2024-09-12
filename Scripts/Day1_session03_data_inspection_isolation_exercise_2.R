@@ -5,7 +5,7 @@ library(tidyverse)
 library(gagglr)
 
 # Create a path to data
-mock_path <- list.files("Data", pattern = "dataset", full.names = T)
+mock_path <- list.files("Data", pattern = "_final", full.names = T)
 
 # Load the data
 df_mock <- read_excel(mock_path) %>% 

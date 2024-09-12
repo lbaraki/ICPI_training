@@ -32,8 +32,8 @@ df_train %>% distinct(kp_at_diagnosis)
 
 df_train %>% 
   mutate(pop_type = case_when(
-    kp_at_diagnosis %in% c("", "", "", "",
-                           "", "", "") ~ "Key Population", 
+    kp_at_diagnosis %in% c("FSW", "TG", "Prisoner", "MSW",
+                           "PWID", "MSM", "TGW") ~ "Key Population", 
     TRUE ~ "General Population"
   ))
 
