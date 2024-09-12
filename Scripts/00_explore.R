@@ -151,7 +151,7 @@ df_clean <- df_clean %>% mutate(
     age_at_art_init >=15 & age_at_art_init <25 ~ "15-24",
     age_at_art_init >=25 & age_at_art_init <35 ~ "25-34",
     age_at_art_init >=35 & age_at_art_init <50 ~ "35-49",
-    age_at_art_init >50 ~"50+")
+    age_at_art_init >=50 ~"50+")
   ) 
   
 
@@ -166,23 +166,40 @@ df_clean <- df_clean %>% mutate(
     age_at_hiv_diag >=15 & age_at_hiv_diag <25 ~ "15-24",
     age_at_hiv_diag >=25 & age_at_hiv_diag <35 ~ "25-34",
     age_at_hiv_diag >=35 & age_at_hiv_diag <50 ~ "35-49",
-    age_at_hiv_diag >50 ~"50+")
+    age_at_hiv_diag >=50 ~"50+")
 ) #%>% select(dob, date_hiv_diag, date_art_init, age_at_hiv_diag, age_group_hiv_diag) %>% View()
+
+#categorize period of ART initiation (aligns with FY22Q4 - FY23Q4)
+df_final <- 
+  df_clean %>% mutate(
+    art_init_period = case_when(
+      date_art_init >= "2022-07-01" & date_art_init <= "2022-09-30"  ~ "FY22Q4",
+      date_art_init >= "2022-10-01" & date_art_init <= "2022-12-31"  ~ "FY23Q1",
+      date_art_init >= "2023-01-01" & date_art_init <= "2023-03-30"  ~ "FY23Q2",
+      date_art_init >= "2023-04-01" & date_art_init <= "2023-06-30"  ~ "FY23Q3",
+      date_art_init >= "2023-07-01" & date_art_init <= "2023-09-30"  ~ "FY23Q4",
+      TRUE ~ "Other Years") )
+
+df_final %>% 
+  group_by(art_init_period, age_group_art_init) %>% summarise(clients = n())
 
 
 df_clean %>%
   write_csv("Data/mock-dataset-clean-2024.csv")
 
+df_final %>% 
+  write_csv("Data/mock-dataset-final-2024.csv")
+
 # VIZ ============================================================================
 #Subset data to past 12 months 
 
-max_date <- df_clean %>% 
+max_date <- df_final %>% 
   summarise(max_date = max(date_hiv_diag, na.rm = TRUE)) %>% 
   pull(max_date) 
 
-min_date <- df_subset - months(12)
+min_date <- max_date - months(12)
 
-df_viz <- df_clean %>%
+df_viz <- df_final %>%
   filter(date_hiv_diag >= min_date & date_hiv_diag <= max_date)
 
 #In last 12 months, proportion of clients diagnosed HIV+ are KP vs Gen Pop? 
